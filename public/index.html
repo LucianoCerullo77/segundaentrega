@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./CSS/style.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/ejs@3.1.6/ejs.min.js"></script>
+    <title>Segunda Entrega</title>
+  </head>
+  <body>
+    <nav>
+      <h2>Segunda Entrega</h2>
+    </nav>
+    <div class="container">
+      <h2>Upload a product</h2>
+      <!-- action="/api/products" method="post" -->
+      <form class="addProd" id="product-form">
+        <div>
+          <label for="title">Title: </label>
+          <input type="text" name="title" class="addProdName" required />
+        </div>
+        <div>
+          <label>Price: </label>
+          <input type="number" min="0" name="price" class="addProdPrice" required />
+        </div>
+        <div>
+          <label>Thumbnail: </label>
+          <input type="text" name="thumbnail" class="addProdThumbnail" required />
+        </div>
+        <div>
+          <label>Code: </label>
+          <input type="text" name="code" class="addProdCode" required />
+        </div>
+        <div>
+          <label>Stock: </label>
+          <input type="number" min="0" name="stock" class="addProdStock" required />
+        </div>
+        <div>
+          <label>Description: </label>
+          <textarea name="description" class="addProdDescription" cols="30" rows="10" required></textarea>
+        </div>
+        <input type="submit" value="Save" />
+      </form>
+      <a href="/api/productos">
+        <button>Go to the product list</button>
+      </a>
+    </div>
+    <div class="addedProd-container" id="product-list"></div>
+    <div class="container" id="chatroom"></div>
+  </div>
+  <div class="container">
+    <form class="chatbox" id="chatbox">
+      <input type="email" name="email" placeholder="email" required />
+      <input type="text" name="text" placeholder="message" required />
+      <input type="submit" value="save" />
+    </form>
+  </div>
+  </body>
+  <script src="./js/main.js"></script>
+</html>

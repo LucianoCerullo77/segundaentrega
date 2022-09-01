@@ -1,0 +1,29 @@
+<table class="content-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>ID</th>
+        <th>Price</th>
+        <th>Thumbnail</th>
+        <th>Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(el=>{ %>
+      <tr>
+        <td><%=el.title%></td>
+        <td><%=el.id%></td>
+        <td>$<%=el.price%></td>
+        <td><img src=<%=el.thumbnail%> alt=<%=el.thumbnail%>></td>
+        <td>
+          <a href=<%="./api/productos/"+ el.id%>>
+              <button>Go to product</button>
+          </a>
+      </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <a href="/">
+      <button>Back to the form</button>
+  </a>

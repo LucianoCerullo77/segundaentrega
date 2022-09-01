@@ -1,0 +1,11 @@
+<div class="message-box">
+    <%if(chat.length){%> 
+      <% chat.forEach(el=>{ %>
+          <div>
+              <span><%= el.timestamp%></span>
+              <span><%= el.email%>:</span>
+              <span><%= el.text%></span>
+          </div>
+      <% }) %> 
+    <% } %>
+  </div>
