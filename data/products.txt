@@ -8,5 +8,15 @@
     "description": "Example",
     "id": 1,
     "timestamp": "(08/31/2022 - 23:38:09)"
+  },
+  {
+    "title": "ejemplo",
+    "price": "1",
+    "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/2004_Nissan_350Z_3.5_Front.jpg/245px-2004_Nissan_350Z_3.5_Front.jpg",
+    "code": "1",
+    "stock": "10",
+    "description": "just an example",
+    "id": 2,
+    "timestamp": "(09/06/2022 - 19:54:53)"
   }
 ]

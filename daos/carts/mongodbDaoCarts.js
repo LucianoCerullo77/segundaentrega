@@ -1,18 +1,19 @@
 const fs = require("fs");
-const FileContainer = require("../../containers/fileContainer");
+const mongoose = require("mongoose");
+const MongodbContainer = require("../../containers/mongodbContainer");
+const Product = require("../../modals/mongoProductModal");
+const Cart = require("../../modals/mongoCartModal.js");
+mongoose.connect("mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/MongoDBPrueba?retryWrites=true&w=majority");
 
-class FileDaoCarts extends FileContainer {
-  constructor(ruta) {
-    super(ruta);
+class MongodbDaoCarts extends MongodbContainer {
+  constructor(schema) {
+    super(schema);
   }
 
   async getAllInCart(cartId) {
-    let searchId = parseInt(cartId);
     try {
-      const content = await fs.promises.readFile(this.fileName, "utf-8");
-      const data = JSON.parse(content);
-      const index = data.findIndex((el) => el.id === searchId);
-      return data[index].products;
+      const searchResult = await this.schema.findById(cartId, { products: 1 });
+      return searchResult;
     } catch (error) {
       console.log(error);
     }
@@ -20,43 +21,23 @@ class FileDaoCarts extends FileContainer {
 
   async createCart() {
     try {
-      let content = await fs.promises.readFile(this.fileName, "utf8");
-      if (content == "") {
-        fs.writeFileSync(this.fileName, "[]");
-        content = "[]";
-      }
-      const data = JSON.parse(content);
       const time = timestamp();
-      if (data.length > 0) {
-        data.push({ id: data[data.length - 1].id + 1, timestamp: time, products: [] });
-      } else {
-        data.push({ id: 1, timestamp: time, products: [] });
-      }
-      fs.writeFileSync(this.fileName, JSON.stringify(data, null, 2));
-      return data[data.length - 1].id;
+      const newCart = new this.schema({ timestamp: time, products: [] });
+      await newCart.save();
+      return newCart;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async addProduct(cartId, obj) {
+  async addProduct(cartId, prodId) {
     try {
-      let content = await fs.promises.readFile(this.fileName, "utf8");
-      if (content == "") {
-        fs.writeFileSync(this.fileName, "[]");
-        content = "[]";
-      }
-      const data = JSON.parse(content);
-
-      const cartIndex = data.findIndex((el) => el.id === parseInt(cartId));
-
-      if (cartIndex >= 0) {
-        data[cartIndex].products.push(obj);
-        fs.writeFileSync(this.fileName, JSON.stringify(data, null, 2));
-        return data[cartIndex].products;
-      } else {
-        throw new Object({ error: "Cart does not exist" });
-      }
+      const productSearcher = new MongodbContainer(Product);
+      const prodToAdd = await productSearcher.getById(prodId);
+      await this.schema.findByIdAndUpdate(cartId, { $push: { products: prodToAdd } });
+      const cartSearcher = new MongodbContainer(Cart);
+      const updatedCart = await cartSearcher.getById(cartId);
+      return updatedCart;
     } catch (error) {
       console.log(error);
     }
@@ -64,22 +45,10 @@ class FileDaoCarts extends FileContainer {
 
   async removeProduct(cartId, prodId) {
     try {
-      let content = await fs.promises.readFile(this.fileName, "utf8");
-      if (content == "") {
-        fs.writeFileSync(this.fileName, "[]");
-        content = "[]";
-      }
-      const data = JSON.parse(content);
-      const cartIndex = data.findIndex((el) => el.id === parseInt(cartId));
-
-      if (cartIndex >= 0) {
-        data[cartIndex].products = data[cartIndex].products.filter((el) => el.id !== prodId);
-        fs.writeFileSync(this.fileName, JSON.stringify(data, null, 2));
-
-        return data[cartIndex].products;
-      } else {
-        throw new Object({ error: "Cart does not exist" });
-      }
+      await this.schema.findByIdAndUpdate(cartId, { $pull: { products: { _id: prodId } } });
+      const cartSearcher = new MongodbContainer(Cart);
+      const updatedCart = await cartSearcher.getById(cartId);
+      return updatedCart;
     } catch (error) {
       console.log(error);
     }
@@ -106,4 +75,4 @@ function timestamp() {
   return dateStr;
 }
 
-module.exports = FileDaoCarts;
+module.exports = MongodbDaoCarts;

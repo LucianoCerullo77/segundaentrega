@@ -1,58 +1,47 @@
+const mongoose = require("mongoose");
+mongoose.connect("mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/MongoDBPrueba?retryWrites=true&w=majority");
 
-const fs = require("fs");
-
-class FileContainer {
-  constructor(fileName) {
-    this.fileName = "./data/" + fileName + ".txt";
+class MongodbContainer {
+  constructor(schema) {
+    this.schema = schema;
   }
 
   async getAll() {
     try {
-      const content = await fs.promises.readFile(this.fileName, "utf-8");
-      const data = JSON.parse(content);
-      return data;
+      const content = await this.schema.find();
+      return content;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async getById(numb) {
+  async getById(id) {
     try {
-      const content = await fs.promises.readFile(this.fileName, "utf-8");
-      const data = JSON.parse(content);
-      const product = data.find((el) => el.id == numb);
-      if (product) {
-        return product;
-      } else {
-        throw new Object({ error: "Object does not exist" });
-      }
+      const content = await this.schema.findById(id);
+      return content;
     } catch (error) {
-      return error;
+      console.log(error);
+      throw new Object({ error: "Object does not exist" });
     }
   }
 
-  async deleteById(numb) {
+  async deleteById(id) {
     try {
-      const content = await fs.promises.readFile(this.fileName, "utf-8");
-      const arr = JSON.parse(content);
-      const data = arr.filter((el) => {
-        return el.id != numb;
-      });
-      fs.writeFileSync(this.fileName, JSON.stringify(data, null, 2));
-      return "Deleted the object";
+      const deleted = await this.schema.findByIdAndDelete(id);
+      return `Deleted the product: ${deleted.title}`;
     } catch (error) {
       console.log(error);
     }
   }
 
-  deleteAll() {
+  async deleteAll() {
     try {
-      fs.writeFileSync(this.fileName, "[]");
-      return "File was emptied";
+      await this.schema.deleteMany();
+      return "Collection was emptied";
     } catch (error) {
       return error;
     }
   }
 }
 
-module.exports = FileContainer;
+module.exports = MongodbContainer;

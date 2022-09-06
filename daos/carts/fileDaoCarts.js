@@ -40,8 +40,10 @@ class FileDaoCarts extends FileContainer {
     }
   }
 
-  async addProduct(cartId, obj) {
+  async addProduct(cartId, prodId) {
     try {
+      const prodsDB = new FileContainer("products");
+      const obj = await prodsDB.getById(prodId);
       let content = await fs.promises.readFile(this.fileName, "utf8");
       if (content == "") {
         fs.writeFileSync(this.fileName, "[]");
@@ -51,12 +53,16 @@ class FileDaoCarts extends FileContainer {
 
       const cartIndex = data.findIndex((el) => el.id === parseInt(cartId));
 
-      if (cartIndex >= 0) {
+      if (cartIndex >= 0 && !obj.error) {
         data[cartIndex].products.push(obj);
         fs.writeFileSync(this.fileName, JSON.stringify(data, null, 2));
         return data[cartIndex].products;
       } else {
-        throw new Object({ error: "Cart does not exist" });
+        if (cartIndex >= 0) {
+          throw new Object({ error: "Cart does not exist" });
+        } else {
+          throw new Object({ error: "Product does not exist" });
+        }
       }
     } catch (error) {
       console.log(error);
