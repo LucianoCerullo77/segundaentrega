@@ -1,14 +1,8 @@
 const express = require("express");
-// import { express } from "express";
 const { Router } = express;
 const admin = require("../../controllers/adminController");
-// import admin from "../../controllers/adminController";
-
 const productosRouter = new Router();
-
 const { prodsDB } = require("../../daos/index");
-// const { prods } = require("../../classes/products");
-// import prods from "../../classes/products";
 
 productosRouter.get("/", async (req, res) => {
   try {

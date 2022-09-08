@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const MongodbContainer = require("../../containers/mongodbContainer");
-mongoose.connect("mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/MongoDBPrueba?retryWrites=true&w=majority");
+mongoose.connect("mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/?retryWrites=true&w=majority");
 
 class MongodbDaoProduct extends MongodbContainer {
   constructor(schema) {

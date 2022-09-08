@@ -1,9 +1,8 @@
-const fs = require("fs");
 const mongoose = require("mongoose");
 const MongodbContainer = require("../../containers/mongodbContainer");
 const Product = require("../../modals/mongoProductModal");
-const Cart = require("../../modals/mongoCartModal.js");
-mongoose.connect("mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/MongoDBPrueba?retryWrites=true&w=majority");
+const Cart = require("../../modals/mongoCartModal");
+mongoose.connect("mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/?retryWrites=true&w=majority");
 
 class MongodbDaoCarts extends MongodbContainer {
   constructor(schema) {

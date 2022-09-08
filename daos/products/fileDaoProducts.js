@@ -2,8 +2,8 @@ const fs = require("fs");
 const FileContainer = require("../../containers/fileContainer");
 
 class FileDaoProducts extends FileContainer {
-  constructor(ruta) {
-    super(ruta);
+  constructor(filename) {
+    super(filename);
   }
   async save(obj) {
     try {

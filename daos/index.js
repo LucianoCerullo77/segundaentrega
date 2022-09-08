@@ -1,15 +1,49 @@
-const FileDaoCarts = require("./carts/fileDaoCarts");
-const FileDaoProducts = require("./products/fileDaoProducts");
+const dotenv = require("dotenv");
+dotenv.config();
 
-const cartsDB = new FileDaoCarts("carts");
-const prodsDB = new FileDaoProducts("products");
+let prodsDB;
+let cartsDB;
 
-// const Product = require("../modals/mongoProductModal");
-// const Cart = require("../modals/mongoCartModal");
-// const MongodbDaoProduct = require("../daos/products/mongodbDaoProducts");
-// const MongodbContainer = require("../containers/mongodbContainer");
+switch (process.env.PERS) {
+  case "memory":
+    const MemoryDaoProducts = require("./products/memoryDaoProducts");
+    const MemoryDaoCarts = require("./carts/memoryDaoCarts");
 
-// const prodsDB = new MongodbDaoProduct(Product);
-// const cartsDB = new MongodbContainer(Cart);
+    let prodsArr = [];
+    let cartArr = [];
+
+    prodsDB = new MemoryDaoProducts(prodsArr);
+    cartsDB = new MemoryDaoCarts(cartArr);
+
+    break;
+  case "files":
+    const FileDaoProducts = require("./products/fileDaoProducts");
+    const FileDaoCarts = require("./carts/fileDaoCarts");
+
+    prodsDB = new FileDaoProducts("products");
+    cartsDB = new FileDaoCarts("carts");
+    break;
+
+  case "firebase":
+    const FirebaseDaoProducts = require("./products/firebaseDaoProducts");
+    const FirebaseDaoCarts = require("./carts/firebaseDaoCarts");
+
+    prodsDB = new FirebaseDaoProducts("products");
+    cartsDB = new FirebaseDaoCarts("carts");
+    break;
+
+  case "mongo":
+    const MongoDaoProducts = require("./products/mongodbDaoProducts");
+    const MongoDaoCarts = require("./carts/mongodbDaoCarts");
+    const Product = require("../modals/mongoProductModal");
+    const Cart = require("../modals/mongoCartModal");
+
+    prodsDB = new MongoDaoProducts(Product);
+    cartsDB = new MongoDaoCarts(Cart);
+
+    break;
+  default:
+    break;
+}
 
 module.exports = { cartsDB, prodsDB };
