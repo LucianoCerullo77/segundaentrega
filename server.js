@@ -1,4 +1,6 @@
 const express = require("express");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 const app = express();
 const { Server: HttpServer } = require("http");
@@ -13,6 +15,17 @@ const { messages } = require("./containers/messagesContainer");
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: "mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/?retryWrites=true&w=majority",
+      ttl: 600,
+    }),
+    secret: "coder",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use("/", router);
 app.set("view engine", "ejs");
 

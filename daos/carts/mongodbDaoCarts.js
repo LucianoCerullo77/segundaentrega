@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectId } = require("mongodb");
 const MongodbContainer = require("../../containers/mongodbContainer");
 const Product = require("../../modals/mongoProductModal");
 const Cart = require("../../modals/mongoCartModal");
@@ -33,10 +34,14 @@ class MongodbDaoCarts extends MongodbContainer {
     try {
       const productSearcher = new MongodbContainer(Product);
       const prodToAdd = await productSearcher.getById(prodId);
-      await this.schema.findByIdAndUpdate(cartId, { $push: { products: prodToAdd } });
-      const cartSearcher = new MongodbContainer(Cart);
-      const updatedCart = await cartSearcher.getById(cartId);
-      return updatedCart;
+      if (prodToAdd) {
+        await this.schema.findByIdAndUpdate(cartId, { $push: { products: prodToAdd } });
+        const cartSearcher = new MongodbContainer(Cart);
+        const updatedCart = await cartSearcher.getById(cartId);
+        return updatedCart;
+      } else {
+        throw new Object({ error: "Product does not exist" });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -44,10 +49,18 @@ class MongodbDaoCarts extends MongodbContainer {
 
   async removeProduct(cartId, prodId) {
     try {
-      await this.schema.findByIdAndUpdate(cartId, { $pull: { products: { _id: prodId } } });
-      const cartSearcher = new MongodbContainer(Cart);
-      const updatedCart = await cartSearcher.getById(cartId);
-      return updatedCart;
+      const currentCart = await this.schema.find();
+      console.log(currentCart);
+      const indexCart = currentCart.findIndex((el) => el._id == cartId);
+      const indexProduct = currentCart[indexCart].products.findIndex((el) => el._id == prodId);
+      currentCart[indexCart].products.splice(indexProduct, 1);
+      console.log(indexProduct);
+      await this.schema.findByIdAndUpdate(cartId, {
+        products: currentCart[indexCart].products,
+        timestamp: timestamp(),
+      });
+
+      return currentCart[indexCart];
     } catch (error) {
       console.log(error);
     }

@@ -1,3 +1,7 @@
+const MongoDaoProducts = require("./daos/products/mongodbDaoProducts");
+const MongoDaoCarts = require("./daos/carts/mongodbDaoCarts");
+const Product = require("./modals/mongoProductModal");
+const Cart = require("./modals/mongoCartModal");
 const MemoryDaoProducts = require("./daos/products/memoryDaoProducts");
 const MemoryDaoCarts = require("./daos/carts/memoryDaoCarts");
 const express = require("express");
@@ -84,8 +88,18 @@ let cartsArray = [
     ],
   },
 ];
-const prodsDB = new MemoryDaoProducts(productsArray);
-const cartsDB = new MemoryDaoCarts(cartsArray);
+const prodsDB = new MongoDaoProducts(Product);
+const cartsDB = new MongoDaoCarts(Cart);
+
+app.get("/products2", async (req, res) => {
+  try {
+    const response = await cartsDB.testeando("6313e22eef7626e1aa09a919", "6313dd91e4888ab87e9b671a");
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
 
 app.get("/products", async (req, res) => {
   try {
@@ -99,7 +113,17 @@ app.get("/products", async (req, res) => {
 
 app.post("/products", async (req, res) => {
   try {
-    const response = await cartsDB.addProduct(3, product);
+    const response = await cartsDB.addProduct("6313e22eef7626e1aa09a919", "6317a853674c1e06a613cb2f");
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).end();
+  }
+});
+
+app.post("/products2", async (req, res) => {
+  try {
+    const response = await prodsDB.save(product);
     res.json(response);
   } catch (error) {
     console.log(error);
@@ -119,7 +143,7 @@ app.put("/products", async (req, res) => {
 
 app.delete("/products", async (req, res) => {
   try {
-    const response = await cartsDB.removeProduct(2, 3);
+    const response = await cartsDB.testeando("631f72bbcd68eafe3738fe2d", "6313dd91e4888ab87e9b671a");
     res.json(response);
   } catch (error) {
     console.log(error);
