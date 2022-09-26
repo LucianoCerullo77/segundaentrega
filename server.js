@@ -17,9 +17,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
-    store: MongoStore.create({
+    store: new MongoStore({
       mongoUrl: "mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/?retryWrites=true&w=majority",
-      ttl: 600,
+      rolling: true,
+      //change to 600 for 10 minutes
+      ttl: 60,
     }),
     secret: "coder",
     resave: false,

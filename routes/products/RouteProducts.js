@@ -7,8 +7,8 @@ const { prodsDB } = require("../../daos/index");
 productosRouter.get("/", async (req, res) => {
   try {
     const prod = await prodsDB.getAll();
-    // res.render("pages/allProducts", { prod });
-    res.json(prod);
+    res.render("pages/allProducts", { prod });
+    // res.json(prod);
   } catch (error) {
     console.log(error);
   }
