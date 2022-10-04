@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
 const MongodbContainer = require("../../containers/mongodbContainer");
 const Product = require("../../modals/mongoProductModal");
 const Cart = require("../../modals/mongoCartModal");
-mongoose.connect("mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/?retryWrites=true&w=majority");
-
+const MONGOKEY = process.env.MONGOKEY;
+mongoose.connect(MONGOKEY);
 class MongodbDaoCarts extends MongodbContainer {
   constructor(schema) {
     super(schema);

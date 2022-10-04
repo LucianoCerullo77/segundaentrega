@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <title>Table of products</title>
+  </head>
+  <body>
+    <nav>
+      <h2>Navbar</h2>
+    </nav>
+    <div class="container">
+      <h1>REGISTER</h1>
+      <br />
+      <form
+      class="form"
+      action="/auth/register"
+      method="post"
+      role="form"
+      autocomplete="off"
+      >
+
+      <div class="form-group">
+          <input
+          id="username"
+          name="username"
+          placeholder="username"
+          class="form-control"
+          type="text"
+          required
+          />
+        </div>
+        <div class="form-group">
+          <input
+          id="password"
+          name="password"
+          placeholder="password"
+          class="form-control"
+          type="password"
+          required
+          />
+      </div>
+      <div class="form-group">
+          <input
+          id="direction"
+          name="direction"
+          placeholder="direction"
+          class="form-control"
+          type="text"
+          required
+          />
+      </div>
+      <div class="form-group">
+          <input class="btn btn-success my-3" type="submit" value="Register" />
+      </div>
+      </form>
+      <hr />
+      <div class="text-left">
+        <a href="/auth/login">
+          <button >To login</button>
+        </a>
+      </div>
+  </div>
+    </div>
+  </body>
+</html>

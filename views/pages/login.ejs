@@ -12,13 +12,24 @@
       <h2>Navbar</h2>
     </nav>
     <div class="container">
-      <form class="login" id="login-form" action="/auth/login" method="POST">
-        <div>
-          <label for="username">username: </label>
-          <input type="text" name="username" class="username-input" required />
+      <form class="form" action="/auth/login" method="post" role="form" autocomplete="off">
+        <div class="form-group">
+          <input id="username" name="username" placeholder="username" class="form-control" type="text" required />
         </div>
-        <input type="submit" value="Save" />
+
+        <div class="form-group">
+          <input id="password" name="password" placeholder="password" class="form-control" type="password" required />
+        </div>
+
+        <div class="form-group">
+          <input class="btn btn-success my-3" type="submit" value="Login" />
+        </div>
       </form>
+      <div class="text-left">
+        <a href="/auth/register">
+          <button>To register</button>
+        </a>
+      </div>
     </div>
   </body>
 </html>

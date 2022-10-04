@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb+srv://LucianoNico77:pSWEjbrXviJ4eVy9@cluster0.phmjuvh.mongodb.net/MongoDBPrueba?retryWrites=true&w=majority");
-
+const MONGOKEY = process.env.MONGOKEY;
+mongoose.connect(MONGOKEY);
 class MongodbContainer {
   constructor(schema) {
     this.schema = schema;
