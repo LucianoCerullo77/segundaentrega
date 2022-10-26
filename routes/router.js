@@ -1,6 +1,7 @@
 const express = require("express")
 const {Router} = express;
 const router = new Router();
+const { loggerDefault } = require("../middlewares/log4js/class32");
 const homeRouter = require("./home/routerHome");
 const authRouter = require("./auth/routeAuth");
 const infoRouter = require("./extra/routeInfo");
@@ -11,6 +12,10 @@ const cartRouter = require("./cart/routeCart");
 const testRouter = require("./extra/routeTest");
 const notFoundError = require("./errors/404");
 
+router.use((req, res, next) => {
+    loggerDefault.info(`Searched the route "${req.originalUrl}"`);
+    next();
+  });
 router.use("/", homeRouter);
 router.use("/auth", authRouter);
 router.use("/info", infoRouter);

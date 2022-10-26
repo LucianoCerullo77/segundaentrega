@@ -1,5 +1,6 @@
 const { options } = require("../data/knexDB");
 const knex = require("knex")(options);
+const { loggerApiError } = require("../middlewares/log4js/class32");
 
 class Messages {
   constructor(fileName) {
@@ -10,7 +11,7 @@ class Messages {
       const content = await knex.from("messages").select("*");
       return content;
     } catch (error) {
-      console.log(error);
+      loggerApiError.error("there has been an error", "n/", `${error}`);
     }
   }
   async save(obj) {
@@ -30,7 +31,7 @@ class Messages {
 
       return message;
     } catch (error) {
-      console.log(error);
+      loggerApiError.error("there has been an error", "n/", `${error}`);
     }
   }
 }
