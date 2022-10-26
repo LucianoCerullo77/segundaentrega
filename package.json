@@ -12,6 +12,7 @@
   "dependencies": {
     "@faker-js/faker": "^7.5.0",
     "bcrypt": "^5.0.1",
+    "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.2",
@@ -22,6 +23,7 @@
     "firebase-admin": "^11.0.1",
     "glitch": "^0.1.0",
     "knex": "^2.2.0",
+    "log4js": "^6.7.0",
     "minimist": "^1.2.6",
     "mongodb": "^4.9.1",
     "mongoose": "^6.5.4",

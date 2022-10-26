@@ -1,22 +1,26 @@
 const express = require("express");
+const app = express();
+const router = require("./routes/router");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
-const app = express();
 const { Server: HttpServer } = require("http");
 const { Server: IOServer } = require("socket.io");
 const bcrypt = require("bcrypt");
-const minimist = require("minimist");
-const router = require("./routes/router");
 
-const PORT = Object.values(minimist(process.argv.slice(2)))[0][0] || 8080;
-const MONGOKEY = process.env.MONGOKEY;
+
 const { prodsDB } = require("./daos/index");
 const { messages } = require("./containers/messagesContainer");
+
 const passport = require("passport");
 const { Strategy } = require("passport-local");
 const localStrategy = Strategy;
-const User = require("./modals/user");
+
+
+const minimist = require("minimist");
+const compression = require("compression");
+
+const PORT = Object.values(minimist(process.argv.slice(2)))[0][0] || 8080;
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
@@ -37,6 +41,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(compression());
 app.use("/", router);
 app.set("view engine", "ejs");
 passport.use(

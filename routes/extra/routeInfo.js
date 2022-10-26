@@ -13,7 +13,8 @@ infoRouter.get("/", async (req, res) => {
     processId: process.pid,
     filePath: process.cwd(),
   };
-  res.render("pages/info", { info: info });
+  res.send(info);
+  // res.render("pages/info", { info: info });
 });
 
 module.exports = infoRouter;
