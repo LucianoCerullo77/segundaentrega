@@ -1,50 +1,18 @@
 const express = require("express");
 const { Router } = express;
-const { fork } = require("child_process");
+const minimist = require("minimist");
 
 const randomsRouter = new Router();
 
-function generator(rad) {
-  const arr = [];
-  const obj = {};
 
-  for (let index = 1; index <= 1000; index++) {
-    arr.push({ id: index, amount: 0 });
-  }
-
-  for (let index = 0; index < rad; index++) {
-    let numb = Math.floor(Math.random() * 1000 + 1);
-    ++arr[numb - 1].amount;
-  }
-  arr.forEach((element) => {
-    obj[element.id] = element.amount;
-  });
-  return obj;
-}
 
 randomsRouter.get("/", (req, res) => {
-  try {
-    const childProcess = fork("./modals/processRandoms");
-    childProcess.send({ type: "calculate", radius: 100000000 });
-    childProcess.on("message", (result) => {
-      console.log("completed");
-      res.json(result);
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
-randomsRouter.get("/:cant", (req, res) => {
-  try {
-    const childProcess = fork("./modals/processRandoms");
-    childProcess.send({ type: "calculate", radius: req.params.cant });
-    childProcess.on("message", (result) => {
-      console.log("completed");
-      res.json(result);
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  console.log(`port: ${Object.values(minimist(process.argv.slice(2)))[0][0] || 8080} -> Fyh: ${Date.now()}`);
+  res.send(
+    `Servidor express <span style="color:blueviolet;">(Nginx)</span> en ${
+      Object.values(minimist(process.argv.slice(2)))[0][0] || 8080
+    } - <b>PID ${process.pid}</b> - ${new Date().toLocaleString()}`
+  );
 });
 
 module.exports = randomsRouter;
